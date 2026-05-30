@@ -1,0 +1,68 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Planetas | Galactic Manager{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+
+<div class="space-header">
+    <h1> Planetas</h1>
+    <div class="header-actions">
+        <a href="{% url 'colonias:planeta_create' %}" class="btn-space primary">+ Nuevo planeta</a>
+    </div>
+</div>
+
+<!-- Filtro de búsqueda -->
+<form method="get" class="space-filter">
+    <label>
+        Buscar
+        <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Nombre o tipo…">
+    </label>
+    <button type="submit" class="btn-space secondary">Buscar</button>
+    <a href="{% url 'colonias:planeta_list' %}" class="btn-space ghost">Limpiar</a>
+</form>
+
+<!-- Tabla -->
+<div class="space-table-wrap">
+    <table class="space-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Distancia</th>
+                <th>Colonias</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for planeta in planetas %}
+                <tr>
+                    <td>
+                        <a href="{% url 'colonias:planeta_detail' planeta.pk %}">
+                            {{ planeta.nombre }}
+                        </a>
+                    </td>
+                    <td>{{ planeta.tipo }}</td>
+                    <td>{{ planeta.distancia }}</td>
+                    <td>{{ planeta.colonias.count }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'colonias:planeta_update' planeta.pk %}" class="btn-space ghost">Editar</a>
+                            <a href="{% url 'colonias:planeta_delete' planeta.pk %}" class="btn-space danger">Borrar</a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="empty">No se encontraron planetas.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%else%}
+  <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{%endif%}
+  {% include "colonias/pagination.html" %}
+
+{% endblock %}

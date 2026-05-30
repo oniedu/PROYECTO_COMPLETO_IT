@@ -1,0 +1,14 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Borrar informe | Galactic Manager{% endblock %}
+
+{% block content %}
+<h1>Borrar {{ informe.id }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <p>El informe se eliminara de forma permanente.</p>
+    <button type="submit">Borrar informe</button>
+    <a href="{% url 'colonias:informe_detail' informe.pk %}">Cancelar</a>
+</form>
+{% endblock %}

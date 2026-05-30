@@ -1,0 +1,39 @@
+{% extends 'colonias/base.html' %}
+
+{% block title %}Inicio | Galactic Manager{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-white">Panel de Control Galáctico</h1>
+        <p class="lead text-muted">Bienvenido al sistema central de gestión de colonias y misiones espaciales.</p>
+    </div>
+    
+    <p>Inicia sesión en <strong>Acceso Tripulación</strong> para poder acceder a las funciones del gestor galáctico.</p>
+    <p>Para crear una cuenta nueva selecciona <strong>Registro tripulante</strong>.</p>
+    <p>
+    <a href="{% url 'login' %}" class="btn-login">Acceso Tripulación</a>
+      <a style="position:right" href="{% url 'colonias:register' %}">Registro Tripulante</a></p>
+     <div class="card bg-dark text-white mb-5 shadow-lg" style="border: 1px solid #333;">
+        <div class="card-header bg-secondary bg-opacity-25 d-flex align-items-center justify-content-between">
+            <h5 class="mb-0"> Transmisión en directo desde la NASA: <strong>{{ nasa.title }}</strong></h5>
+            <span class="badge bg-info text-dark">API Externa</span>
+        </div>
+        <div class="card-body text-center p-4">
+            {% if nasa.media_type == "video" %}
+                <div class="ratio ratio-16x9 mb-3">
+                    <iframe src="{{ nasa.url }}" allowfullscreen></iframe>
+                </div>
+            {% else %}
+                <img src="{{ nasa.url }}" class="img-fluid rounded mb-3 shadow" alt="{{ nasa.title }}" style="max-height: 500px; width: 100%; object-fit: cover;">
+            {% endif %}
+            
+            <div class="p-3 bg-black bg-opacity-50 rounded text-start">
+                <p class="card-text card-explanation style-nasa-text" style="font-size: 0.95rem; color: #e0e0e0; line-height: 1.6;">
+                    {{ nasa.explanation }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

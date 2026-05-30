@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Colonias — Galactic Manager{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'colonias/css/space.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <nav class="navbar-space">
+        <a class="brand" href="{% url 'colonias:inicio' %}">
+             GALACTIC<span>MANAGER</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="{% url 'colonias:inicio' %}"> Panel de Control</a>
+            <a href="{% url 'colonias:planeta_list' %}"> Planetas</a>
+            <a href="{% url 'colonias:colonia_list' %}"> Colonias</a>
+            <a href="{% url 'colonias:mision_list' %}"> Misiones</a>
+            <a href="{% url 'colonias:informe_list' %}"> Informes</a>
+        </div>
+    </nav>
+
+            <div class="user-space-zone">
+                {% if user.is_authenticated %}
+                    <span style="color: #00ffcc;"> Tripulante: <strong>{{ user.username }}</strong></span>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline; margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">
+                            Cerrar Sesión
+                        </button>
+                    </form>
+                
+                    
+                {% endif %}
+            </div>
+    <main class="space-main">
+
+        {% if messages %}
+            <div class="space-alerts">
+                {% for message in messages %}
+                    <div class="space-alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Borrar colonia | Galactic Manager{% endblock %}
+
+{% block content %}
+<h1>Borrar {{ colonia.nombre }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <p>Esta accion eliminara tambien las misiones e informes asociados por la relacion en cascada.</p>
+    <button type="submit">Borrar colonia</button>
+    <a href="{% url 'colonias:colonia_detail' colonia.pk %}">Cancelar</a>
+</form>
+{% endblock %}

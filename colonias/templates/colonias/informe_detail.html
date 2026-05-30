@@ -1,0 +1,47 @@
+{% extends "colonias/base.html" %}
+
+{% block title %} Detalle informe | Galactic Manager{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="space-header">
+    <h1>{{ informe }}</h1> <div class="header-actions">
+        <a href="{% url 'colonias:informe_update' informe.pk %}" class="btn-space secondary">Editar</a>
+        <a href="{% url 'colonias:informe_delete' informe.pk %}" class="btn-space danger">Borrar</a>
+        <a href="{% url 'colonias:informe_list' %}" class="btn-space ghost">← Listado</a>
+    </div>
+</div>
+
+<h2>Datos del informe</h2>
+<dl class="space-dl">
+    <dt>Contenido</dt>
+    <dd>{{ informe.contenido }}</dd>
+
+    <dt>Fecha</dt>
+    <dd>{{ informe.fecha }}</dd>
+
+    <dt>Misión vinculada</dt>
+    <dd>
+        <a href="{% url 'colonias:mision_detail' informe.mision.pk %}">
+            {{ informe.mision.titulo }}
+        </a>
+    </dd>
+</dl>
+
+<div class="space-header" style="margin-top:2.5rem;">
+    <h2 style="margin:0;">Misión Asociada</h2>
+</div>
+
+<ul class="mission-items">
+    <li class="mission-item">
+        <a href="{% url 'colonias:mision_detail' informe.mision.pk %}">{{ informe.mision.titulo }}</a>
+        <span style="color:var(--space-muted);font-size:.9rem;">
+            Estado: {{ informe.mision.get_estado_display }}
+        </span>
+    </li>
+</ul>
+
+{% else %}
+   <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{% endif %}
+{% endblock %}

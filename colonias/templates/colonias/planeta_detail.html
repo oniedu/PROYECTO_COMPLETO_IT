@@ -1,0 +1,54 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}{{ planeta.nombre }} | Galactic Manager{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+
+<div class="space-header">
+    <h1> {{ planeta.nombre }}</h1>
+    <div class="header-actions">
+        <a href="{% url 'colonias:planeta_update' planeta.pk %}" class="btn-space secondary">Editar</a>
+        <a href="{% url 'colonias:planeta_delete' planeta.pk %}" class="btn-space danger">Borrar</a>
+        <a href="{% url 'colonias:planeta_list' %}" class="btn-space ghost">← Listado</a>
+    </div>
+</div>
+
+<!-- Datos principales -->
+<h2>Datos del planeta</h2>
+<dl class="space-dl">
+    <dt>Tipo</dt>
+    <dd>{{ planeta.tipo }}</dd>
+
+    <dt>Distancia</dt>
+    <dd>{{ planeta.distancia }}</dd>
+
+    <dt>Colonias</dt>
+    <dd>{{ planeta.colonias.count }}</dd>
+</dl>
+
+<!-- Colonias asociadas -->
+<div class="space-header" style="margin-top:2.5rem;">
+    <h2 style="margin:0;"> Colonias asociadas</h2>
+    <a href="{% url 'colonias:colonia_create' %}" class="btn-space primary">+ Nueva colonia</a>
+</div>
+
+<ul class="mission-items">
+    {% for colonia in planeta.colonias.all %}
+        <li class="mission-item">
+            <a href="{% url 'colonias:colonia_detail' colonia.pk %}">{{ colonia.nombre }}</a>
+            <span style="color:var(--space-muted);font-size:.9rem;">
+                {{ colonia.poblacion|floatformat:"0" }} hab.
+            </span>
+        </li>
+    {% empty %}
+        <li style="color:var(--space-muted);font-style:italic;padding:.75rem 0;">
+            Este planeta aún no tiene colonias.
+        </li>
+    {% endfor %}
+</ul>
+{%else%}
+    <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{%endif%}
+{% endblock %}
+

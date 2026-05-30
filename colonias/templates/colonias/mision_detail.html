@@ -1,0 +1,47 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}{{ mision.titulo }} | Galactic Manager{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="space-header">
+    <h1> {{ mision.titulo }}</h1>
+    <div class="header-actions">
+        <a href="{% url 'colonias:mision_update' mision.pk %}" class="btn-space secondary">Editar</a>
+        <a href="{% url 'colonias:mision_delete' mision.pk %}" class="btn-space danger">Borrar</a>
+        <a href="{% url 'colonias:mision_list' %}" class="btn-space ghost">← Listado</a>
+    </div>
+</div>
+
+<h2>Datos de la misión</h2>
+<dl class="space-dl">
+    <dt>Colonia</dt>
+    <dd>
+        <a href="{% url 'colonias:colonia_detail' mision.colonia.pk %}">{{ mision.colonia.nombre }}</a>
+    </dd>
+
+    <dt>Planeta</dt>
+    <dd>{{ mision.colonia.planeta.nombre }}</dd>
+
+    <dt>Fecha</dt>
+    <dd>{{ mision.fecha }}</dd>
+
+    <dt>Estado</dt>
+    <dd>
+        <span class="badge-estado badge-{{ mision.estado }}">
+            {{ mision.get_estado_display }}
+        </span>
+    </dd>
+
+    <dt>Responsable</dt>
+    <dd>{{ mision.usuario.username }}</dd>
+</dl>
+
+<h2>Descripción</h2>
+<div class="space-desc">
+    {{ mision.descripcion|linebreaksbr }}
+</div>
+{%else%}
+   <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{%endif%}
+{% endblock %}

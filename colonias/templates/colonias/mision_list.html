@@ -1,0 +1,78 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Misiones | Galactic Manager{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="space-header">
+    <h1> Misiones</h1>
+    <div class="header-actions">
+        <a href="{% url 'colonias:mision_create' %}" class="btn-space primary">+ Nueva misión</a>
+    </div>
+</div>
+
+<form method="get" class="space-filter">
+    <label>
+        Buscar
+        <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Título…">
+    </label>
+    <label>
+        Estado
+        <select name="estado">
+            <option value="">Todos</option>
+            {% for valor, etiqueta in estados %}
+                <option value="{{ valor }}" {% if request.GET.estado == valor %}selected{% endif %}>
+                    {{ etiqueta }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <button type="submit" class="btn-space secondary">Filtrar</button>
+    <a href="{% url 'colonias:mision_list' %}" class="btn-space ghost">Limpiar</a>
+</form>
+
+<div class="space-table-wrap">
+    <table class="space-table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Colonia</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mision in misiones %}
+                <tr>
+                    <td>
+                        <a href="{% url 'colonias:mision_detail' mision.pk %}">{{ mision.titulo }}</a>
+                    </td>
+                    <td>{{ mision.colonia.nombre }}</td>
+                    <td>{{ mision.fecha }}</td>
+                    <td>
+                        <span class="badge-estado badge-{{ mision.estado }}">
+                            {{ mision.get_estado_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'colonias:mision_update' mision.pk %}" class="btn-space ghost">Editar</a>
+                            <a href="{% url 'colonias:mision_delete' mision.pk %}" class="btn-space danger">Borrar</a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="empty">No se encontraron misiones.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%else%}
+   <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{%endif%}
+{% include "colonias/pagination.html" %}
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Registro | Galactic Manager{% endblock %}
+
+{% block content %}
+<div class="login-wrap">
+    <div class="login-card">
+
+        <h2>Registro</h2>
+        <p class="subtitle">Crear nueva cuenta de tripulante</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="space-alerts">
+                    {% for error in form.non_field_errors %}
+                        <div class="space-alert error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    
+                    
+                    {{ field }}
+                    
+                    {% if field.help_text %}
+                        <small style="color: var(--space-muted); font-size: 0.75rem; display: block; margin-top: 0.3rem; line-height: 1.3;">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <span class="form-error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="login-actions">
+                <button type="submit" class="btn-space primary">Registrarse</button>
+                <a href="{% url 'login' %}" class="btn-space secondary">Volver al Login</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Colonias | Galactic Manager{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="space-header">
+    <h1> Colonias</h1>
+    <div class="header-actions">
+        <a href="{% url 'colonias:colonia_create' %}" class="btn-space primary">+ Nueva colonia</a>
+    </div>
+</div>
+
+<form method="get" class="space-filter">
+    <label>
+        Buscar
+        <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Nombre de colonia…">
+    </label>
+    <button type="submit" class="btn-space secondary">Buscar</button>
+    <a href="{% url 'colonias:colonia_list' %}" class="btn-space ghost">Limpiar</a>
+</form>
+
+<div class="space-table-wrap">
+    <table class="space-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Planeta</th>
+                <th>Población</th>
+                <th>Fundación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+       
+        <tbody>
+            {% for colonia in colonias %}
+                <tr>
+                    <td>
+                        <a href="{% url 'colonias:colonia_detail' colonia.pk %}">{{ colonia.nombre }}</a>
+                    </td>
+                    <td>{{ colonia.planeta.nombre }}</td>
+                    <td>{{ colonia.poblacion|floatformat:"0" }}</td>
+                    <td>{{ colonia.fecha_fundacion }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'colonias:colonia_update' colonia.pk %}" class="btn-space ghost">Editar</a>
+                            <a href="{% url 'colonias:colonia_delete' colonia.pk %}" class="btn-space danger">Borrar</a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="empty">No se encontraron colonias.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+        
+    </table>
+</div>
+    {%else%}
+       <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+    {%endif%}
+{% include "colonias/pagination.html" %}
+
+{% endblock %}

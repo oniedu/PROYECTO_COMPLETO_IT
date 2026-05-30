@@ -1,0 +1,27 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Borrar planeta | Galactic Manager{% endblock %}
+
+{% block content %}
+<h1>Borrar {{ planeta.nombre }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <p>
+        <strong>Aviso importante:</strong>
+        al borrar este planeta tambien se eliminaran por cascada sus datos relacionados.
+    </p>
+
+    <dl>
+        <dt>Colonias afectadas</dt>
+        <dd>{{ colonias_afectadas }}</dd>
+        <dt>Misiones afectadas</dt>
+        <dd>{{ misiones_afectadas }}</dd>
+        <dt>Informes afectados</dt>
+        <dd>{{ informes_afectados }}</dd>
+    </dl>
+
+    <button type="submit">Borrar planeta</button>
+    <a href="{% url 'colonias:planeta_detail' planeta.pk %}">Cancelar</a>
+</form>
+{% endblock %}

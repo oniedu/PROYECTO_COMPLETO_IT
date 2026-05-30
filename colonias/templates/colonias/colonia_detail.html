@@ -1,0 +1,56 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}{{ colonia.nombre }} | Galactic Manager{% endblock %}
+{% if request.user.is_authenticated %}
+{% block content %}
+
+<div class="space-header">
+    <h1> {{ colonia.nombre }}</h1>
+    <div class="header-actions">
+        <a href="{% url 'colonias:colonia_update' colonia.pk %}" class="btn-space secondary">Editar</a>
+        <a href="{% url 'colonias:colonia_delete' colonia.pk %}" class="btn-space danger">Borrar</a>
+        <a href="{% url 'colonias:colonia_list' %}" class="btn-space ghost">← Listado</a>
+    </div>
+</div>
+
+<h2>Datos de la colonia</h2>
+<dl class="space-dl">
+    <dt>Planeta</dt>
+    <dd>
+        <a href="{% url 'colonias:planeta_detail' colonia.planeta.pk %}">
+            {{ colonia.planeta.nombre }}
+        </a>
+    </dd>
+
+    <dt>Población</dt>
+    <dd>{{ colonia.poblacion|floatformat:"0" }} habitantes</dd>
+
+    <dt>Fundación</dt>
+    <dd>{{ colonia.fecha_fundacion }}</dd>
+</dl>
+
+<div class="space-header" style="margin-top:2.5rem;">
+    <h2 style="margin:0;"> Misiones asociadas</h2>
+    <a href="{% url 'colonias:mision_create' %}" class="btn-space primary">+ Nueva misión</a>
+</div>
+
+<ul class="mission-items">
+    {% for mision in colonia.misiones.all %}
+        <li class="mission-item">
+            <a href="{% url 'colonias:mision_detail' mision.pk %}">{{ mision.titulo }}</a>
+            <span class="badge-estado badge-{{ mision.estado }}">
+                {{ mision.get_estado_display }}
+            </span>
+        </li>
+    {% empty %}
+        <li style="color:var(--space-muted);font-style:italic;padding:.75rem 0;">
+            Esta colonia aún no tiene misiones.
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+{%else%}
+   <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{%endif%}

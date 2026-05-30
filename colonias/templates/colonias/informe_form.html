@@ -1,0 +1,24 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}
+{% if object %}
+Editar informe
+{% else %}Nuevo informe
+{% endif %} 
+| Galactic Manager
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated %}
+<h1>{% if object %}Editar informe{% else %}Nuevo informe{% endif %}</h1>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% include "colonias/form_fields.html" %}
+    <button class="btn-space secondary" type="submit">Guardar</button>
+    <a class="btn-space secondary" href="{% if object %}{% url 'colonias:informe_detail' object.pk %}{% else %}{% url 'colonias:informe_list' %}{% endif %}">Cancelar</a>
+</form>
+{%else%}
+   <p>Modo invitado: Selecciona <a href="{% url 'colonias:login' %}"> Acceso Tripulación</a> o <a href="{% url 'colonias:register' %}">regístrate.</a></p>
+{%endif%}
+   {% endblock %}

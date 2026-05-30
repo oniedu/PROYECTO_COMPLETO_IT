@@ -1,0 +1,14 @@
+{% extends "colonias/base.html" %}
+
+{% block title %}Borrar mision | Galactic Manager{% endblock %}
+
+{% block content %}
+<h1>Borrar {{ mision.titulo }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <p>La mision se eliminara de forma permanente.</p>
+    <button type="submit">Borrar mision</button>
+    <a href="{% url 'colonias:mision_detail' mision.pk %}">Cancelar</a>
+</form>
+{% endblock %}
