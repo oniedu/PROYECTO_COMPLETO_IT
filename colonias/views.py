@@ -11,6 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 import requests
 from django.shortcuts import render
 
+#Cargar pagina principal
 def inicio(request):
     if request.method == 'POST':
         return redirect('colonias:colonia_list')
@@ -204,6 +205,8 @@ class MisionDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, "Mision eliminada correctamente.")
         return super().form_valid(form)
+
+#CRUD Informe
 class InformeListView(ListView):
     model = Informe
     template_name = "colonias/informe_list.html"
@@ -225,7 +228,7 @@ class InformeListView(ListView):
 
         return queryset
 
-#CRUD Informe
+
 class InformeDetailView(DetailView):
     model = Informe
     template_name = "colonias/informe_detail.html"
